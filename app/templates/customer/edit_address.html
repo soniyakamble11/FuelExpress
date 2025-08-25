@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Address{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Address</h2>
+
+    <form method="POST" action="{{ url_for('customer.edit_address', address_id=address.id) }}">
+        <div class="mb-3">
+            <label for="label" class="form-label">Label</label>
+            <input type="text" class="form-control" id="label" name="label" placeholder="Home, Work, etc." value="{{ address.label }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ address.name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="phone" name="phone" value="{{ address.phone }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="address_line1" class="form-label">Address Line 1</label>
+            <input type="text" class="form-control" id="address_line1" name="address_line1" value="{{ address.address_line1 }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="address_line2" class="form-label">Address Line 2</label>
+            <input type="text" class="form-control" id="address_line2" name="address_line2" value="{{ address.address_line2 }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" name="city" value="{{ address.city }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="state" class="form-label">State</label>
+            <input type="text" class="form-control" id="state" name="state" value="{{ address.state }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="pincode" class="form-label">Pincode</label>
+            <input type="text" class="form-control" id="pincode" name="pincode" value="{{ address.pincode }}" required>
+        </div>
+
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" value="on" id="is_default" name="is_default" {% if address.is_default %}checked{% endif %}>
+            <label class="form-check-label" for="is_default">
+                Set as default address
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Address</button>
+        <a href="{{ url_for('customer.addresses') }}" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>
+{% endblock %}

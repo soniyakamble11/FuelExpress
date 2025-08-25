@@ -1,0 +1,65 @@
+<!-- templates/customer/addresses.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Addresses - FuelExpress</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="bg-white p-5 rounded-4 shadow-lg">
+                    <h2 class="mb-4 text-center">
+                        <i class="fas fa-map-marked-alt"></i> Manage Addresses
+                    </h2>
+                    
+                    <div class="mb-3 text-end">
+                        <a href="{{ url_for('customer.add_address') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-plus"></i> Add New Address
+                        </a>
+                    </div>
+                    
+                    {% if addresses %}
+                        {% for addr in addresses %}
+                        <div class="p-3 mb-3 bg-light rounded-3 d-flex justify-content-between align-items-center shadow-sm">
+                            <div>
+                                <h6>{{ addr.short_address }}</h6>
+                                <small class="text-muted">{{ addr.full_address }}</small>
+                            </div>
+                            <div>
+                                <a href="{{ url_for('customer.edit_address', address_id=addr.id) }}" class="btn btn-sm btn-outline-warning me-2">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="{{ url_for('customer.delete_address', address_id=addr.id) }}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-map-marker-alt fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No addresses found</h5>
+                            <p class="text-muted">Add your first delivery address to get started</p>
+                            <a href="{{ url_for('customer.add_address') }}" class="btn btn-fuel mt-3">
+                                Add Address
+                            </a>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('customer.dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Order Fuel{% endblock %}
+
+{% block content %}
+<div class="order-page-wrapper">
+    <div class="order-container">
+        <h1 class="order-title">Order Fuel</h1>
+        <p class="order-subtitle">Place your fuel order and get it delivered right to your doorstep</p>
+
+        <form method="POST" id="orderForm">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <!-- Fuel Selection -->
+            <div class="form-section">
+                <label class="form-label">Select Fuel Type <span class="required">*</span></label>
+                <div class="fuel-options">
+                    {% for fuel in fuels %}
+                    <label class="fuel-card">
+                        <input type="radio"
+                               name="fuel_id"
+                               value="{{ fuel.id }}"
+                               data-price="{{ fuel.price_per_liter }}"
+                               data-name="{{ fuel.name }}"
+                               {% if loop.first %}checked{% endif %}>
+                        <div class="fuel-card-content">
+                            <i class="fas fa-gas-pump"></i>
+                            <h3>{{ fuel.name }}</h3>
+                            <p class="fuel-price">₹{{ "%.2f"|format(fuel.price_per_liter) }}/L</p>
+                            <small>{{ fuel.description }}</small>
+                        </div>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Quantity -->
+            <div class="form-section">
+                <label for="quantity" class="form-label">Quantity (Liters)</label>
+                <div class="quantity-group">
+                    <button type="button" class="qty-btn" onclick="decreaseQuantity()">−</button>
+                    <input type="number" name="quantity" id="quantity" value="10" min="1" step="1" required>
+                    <button type="button" class="qty-btn" onclick="increaseQuantity()">+</button>
+                </div>
+            </div>
+
+            <!-- Total -->
+            <div class="total-card">
+                <p><strong>Fuel Type:</strong> <span id="selectedFuelName">-</span></p>
+                <p><strong>Quantity:</strong> <span id="displayQuantity">-</span></p>
+                <p><strong>Price per Liter:</strong> <span id="pricePerLiter">-</span></p>
+                <p class="final"><strong>Total Amount:</strong> <span id="totalAmount">₹0.00</span></p>
+            </div>
+
+            <!-- Address -->
+            <div class="form-section">
+                <label class="form-label">Delivery Address</label>
+                {% for address in addresses %}
+                <label class="address-card">
+                    <input type="radio" name="address_id" value="{{ address.id }}" {% if address.is_default %}checked{% endif %}>
+                    <div>
+                        <strong>{{ address.name }}</strong><br>
+                        {{ address.address_line1 }}
+                        {% if address.address_line2 %}, {{ address.address_line2 }}{% endif %}<br>
+                        {{ address.city }}, {{ address.state }} {{ address.pincode }}<br>
+                        <i class="fas fa-phone"></i> {{ address.phone }}
+                    </div>
+                </label>
+                {% endfor %}
+                <a href="{{ url_for('customer.add_address') }}" class="btn-link">+ Add New Address</a>
+            </div>
+
+            <!-- Date & Time -->
+            <div class="form-section grid-2">
+                <div>
+                    <label for="delivery_date" class="form-label">Delivery Date</label>
+                    <input type="date" name="delivery_date" id="delivery_date" class="form-control date-time-input" required>
+                </div>
+                <div>
+                    <label for="delivery_time" class="form-label">Delivery Time</label>
+                    <input type="time" name="delivery_time" id="delivery_time" class="form-control date-time-input" required>
+                </div>
+            </div>
+
+
+            <!-- Special Instructions -->
+            <div class="form-section">
+                <label for="special_instructions" class="form-label">Special Instructions</label>
+                <textarea name="special_instructions" id="special_instructions"
+                        class="form-control" rows="3"
+                        placeholder="Any special delivery instructions..."></textarea>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Place Order</button>
+                <a href="{{ url_for('customer.dashboard') }}" class="btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/order_fuel.css') }}">
+<script src="{{ url_for('static', filename='js/order_fuel.js') }}"></script>
+{% endblock %}

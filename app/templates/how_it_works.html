@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}How It Works - FuelExpress{% endblock %}
+
+{% block content %}
+<style>
+/* --- Section Background --- */
+.how-it-works-section {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 4rem 0;
+}
+
+/* --- Section Heading --- */
+.how-it-works-section h1 {
+    font-weight: 800;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+}
+
+/* --- Feature Cards --- */
+.feature-card {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    border-radius: 20px;
+    padding: 2rem 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* --- Feature Icon --- */
+.feature-card span {
+    font-size: 2.5rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+.feature-card:hover span {
+    transform: scale(1.2);
+}
+
+/* --- Feature Title --- */
+.feature-card h3 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+/* --- Feature Text --- */
+.feature-card p {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .grid.md\:grid-cols-4 {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+}
+@media (max-width: 500px) {
+    .grid.md\:grid-cols-4 {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="min-h-screen py-12 how-it-works-section">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl font-bold text-center mb-12">How It Works</h1>
+        
+        <div class="grid md:grid-cols-4 gap-8">
+            <div class="text-center feature-card">
+                <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span>📱</span>
+                </div>
+                <h3 class="text-xl">1. Order</h3>
+                <p>Select your fuel type and quantity through our easy-to-use platform</p>
+            </div>
+            
+            <div class="text-center feature-card">
+                <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span>📍</span>
+                </div>
+                <h3 class="text-xl">2. Location</h3>
+                <p>Provide your delivery address or use GPS for current location</p>
+            </div>
+            
+            <div class="text-center feature-card">
+                <div class="bg-yellow-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span>🚚</span>
+                </div>
+                <h3 class="text-xl">3. Delivery</h3>
+                <p>Our certified delivery partner brings fuel safely to your location</p>
+            </div>
+            
+            <div class="text-center feature-card">
+                <div class="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span>✅</span>
+                </div>
+                <h3 class="text-xl">4. Complete</h3>
+                <p>Pay securely online or cash on delivery - it's that simple!</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

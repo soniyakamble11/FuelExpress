@@ -1,0 +1,59 @@
+<!-- templates/customer/order_details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - FuelExpress</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="bg-white p-5 rounded-4 shadow-lg">
+                    <h2 class="mb-4 text-center">
+                        <i class="fas fa-info-circle"></i> Order #{{ order.order_number }}
+                    </h2>
+                    
+                    <div class="mb-3">
+                        <h5>Fuel Type:</h5>
+                        <p>{{ order.fuel_type.name }} - {{ order.quantity_liters }}L</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5>Delivery Address:</h5>
+                        <p>{{ order.delivery_address.full_address }}</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5>Order Status:</h5>
+                        <span class="badge bg-{{ order.status_color }}">{{ order.status_display }}</span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5>Total Amount:</h5>
+                        <p><strong>{{ order.formatted_total }}</strong></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5>Order Placed On:</h5>
+                        <p>{{ order.created_at.strftime('%d %b %Y, %I:%M %p') }}</p>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('customer.orders_history') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to History
+                        </a>
+                        <a href="{{ url_for('customer.dashboard') }}" class="btn btn-fuel">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

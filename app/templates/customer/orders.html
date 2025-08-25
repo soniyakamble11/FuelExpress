@@ -1,0 +1,59 @@
+<!-- templates/customer/order_history.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - FuelExpress</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="bg-white p-5 rounded-4 shadow-lg">
+                    <h2 class="mb-4 text-center">
+                        <i class="fas fa-history"></i> Your Order History
+                    </h2>
+                    
+                    {% if orders %}
+                        {% for order in orders %}
+                        <div class="order-item mb-3 p-3 rounded-3 border-start border-4 border-primary bg-light d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5>{{ order.fuel_type.name }} - {{ order.quantity_liters }}L</h5>
+                                <p class="mb-0 text-muted">Order #{{ order.order_number }} • {{ order.created_at.strftime('%d %b %Y') }}</p>
+                                <small class="text-muted">{{ order.delivery_address.city }}</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-{{ order.status_color }}">{{ order.status_display }}</span>
+                                <div class="mt-1"><strong>{{ order.formatted_total }}</strong></div>
+                                <a href="{{ url_for('customer.order_details', order_id=order.id) }}" class="btn btn-outline-primary btn-sm mt-2">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No orders found</h5>
+                            <p class="text-muted">Start by placing your first fuel order</p>
+                            <a href="{{ url_for('customer.order_fuel') }}" class="btn btn-fuel mt-3">
+                                Order Fuel Now
+                            </a>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('customer.dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

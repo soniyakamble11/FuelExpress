@@ -1,0 +1,21 @@
+<h1>Owner Dashboard</h1>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Order No</th>
+        <th>User</th>
+        <th>Fuel Type</th>
+        <th>Quantity</th>
+        <th>Status</th>
+        <th>Total</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.order_number }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.fuel_type.name }}</td>
+        <td>{{ order.quantity_liters }} L</td>
+        <td>{{ order.status_display }}</td>
+        <td>{{ order.formatted_total }}</td>
+    </tr>
+    {% endfor %}
+</table>

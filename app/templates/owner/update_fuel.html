@@ -1,0 +1,11 @@
+<h2>Update Fuel: {{ fuel.name }}</h2>
+<form method="POST">
+    <label>Price per Liter:</label>
+    <input type="text" name="price" value="{{ fuel.price_per_liter }}">
+    <br>
+    <label>
+        <input type="checkbox" name="available" {% if fuel.is_available %}checked{% endif %}> Available
+    </label>
+    <br><br>
+    <button type="submit">Update Fuel</button>
+</form>

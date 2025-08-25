@@ -1,0 +1,15 @@
+<h2>All Orders</h2>
+<table>
+    <tr>
+        <th>Order No.</th><th>User</th><th>Fuel</th><th>Quantity</th><th>Status</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.order_number }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.fuel_type.name }}</td>
+        <td>{{ order.quantity }}</td>
+        <td>{{ order.status.name }}</td>
+    </tr>
+    {% endfor %}
+</table>

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuelExpress - Customer Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links i {
+            margin-right: 0.5rem;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .welcome-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .total-orders { color: #3498db; }
+        .pending-orders { color: #f39c12; }
+        .completed-orders { color: #27ae60; }
+        .total-spent { color: #e74c3c; }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .view-all-btn {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .view-all-btn:hover {
+            color: #764ba2;
+        }
+
+        .recent-orders-list {
+            list-style: none;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s;
+        }
+
+        .order-item:hover {
+            background-color: #f8f9fa;
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 8px;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-details h4 {
+            margin-bottom: 0.3rem;
+            color: #333;
+        }
+
+        .order-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .order-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background-color: #cce5ff;
+            color: #0066cc;
+        }
+
+        .status-delivered {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .fuel-types-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .fuel-type-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .fuel-type-item:hover {
+            background-color: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .fuel-info h4 {
+            margin-bottom: 0.3rem;
+            color: #333;
+        }
+
+        .fuel-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .fuel-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .action-btn i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .default-address {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .default-address h4 {
+            color: #333;
+            margin-bottom: 0.8rem;
+        }
+
+        .default-address p {
+            color: #666;
+            margin-bottom: 0.3rem;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 2rem;
+        }
+
+        .flash-messages {
+            margin-bottom: 1rem;
+        }
+
+        .flash-message {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .flash-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flash-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-gas-pump"></i>
+                FuelExpress
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="{{ url_for('customer.dashboard') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+                <li><a href="{{ url_for('customer.order_fuel') }}"><i class="fas fa-plus-circle"></i>Order Fuel</a></li>
+                <li><a href="{{ url_for('customer.orders_history') }}"><i class="fas fa-history"></i>Orders</a></li>
+                <li><a href="{{ url_for('customer.addresses') }}"><i class="fas fa-map-marker-alt"></i>Addresses</a></li>
+                <li><a href="{{ url_for('customer.profile') }}"><i class="fas fa-user"></i>Profile</a></li>
+            </ul>
+
+            <div class="user-menu">
+                <div class="user-avatar">
+                    {{ current_user.name[0].upper() }}
+                </div>
+                <span>{{ current_user.name }}</span>
+                <a href="{{ url_for('auth.logout') }}" style="color: #e74c3c; margin-left: 1rem;">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1 class="welcome-title">Welcome back, {{ current_user.name }}!</h1>
+            <p class="welcome-subtitle">Ready to fuel up? Manage your orders and track deliveries from your dashboard.</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon total-orders">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-value total-orders">{{ total_orders }}</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon pending-orders">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-value pending-orders">{{ pending_orders }}</div>
+                <div class="stat-label">Pending Orders</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon completed-orders">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-value completed-orders">{{ completed_orders }}</div>
+                <div class="stat-label">Completed Orders</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon total-spent">
+                    <i class="fas fa-rupee-sign"></i>
+                </div>
+                <div class="stat-value total-spent">₹{{ "%.2f"|format(total_spent) }}</div>
+                <div class="stat-label">Total Spent</div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Recent Orders -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Orders</h3>
+                    <a href="{{ url_for('customer.orders_history') }}" class="view-all-btn">View All</a>
+                </div>
+
+                {% if recent_orders %}
+                    <ul class="recent-orders-list">
+                        {% for order in recent_orders %}
+                            <li class="order-item">
+                                <div class="order-details">
+                                    <h4>{{ order.fuel_type.name }} - {{ order.quantity }}L</h4>
+                                    <p>₹{{ "%.2f"|format(order.total_amount) }} • {{ order.created_at.strftime('%b %d, %Y') }}</p>
+                                </div>
+                                <span class="order-status status-{{ order.status.value }}">
+                                    {{ order.status.value.title() }}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="no-data">
+                        <i class="fas fa-shopping-cart" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                        <p>No orders yet. Place your first order!</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Fuel Types & Quick Actions -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">Available Fuel Types</h3>
+                </div>
+
+                <div class="fuel-types-grid">
+                    {% for fuel in fuel_types %}
+                        <div class="fuel-type-item">
+                            <div class="fuel-info">
+                                <h4>{{ fuel.name }}</h4>
+                                <p>{{ fuel.description }}</p>
+                            </div>
+                            <div class="fuel-price">₹{{ "%.2f"|format(fuel.price_per_liter) }}/L</div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if default_address %}
+                    <div class="default-address">
+                        <h4><i class="fas fa-map-marker-alt"></i> Default Delivery Address</h4>
+                        <p><strong>{{ default_address.name }}</strong></p>
+                        <p>{{ default_address.address_line1 }}</p>
+                        {% if default_address.address_line2 %}
+                            <p>{{ default_address.address_line2 }}</p>
+                        {% endif %}
+                        <p>{{ default_address.city }}, {{ default_address.state }} {{ default_address.pincode }}</p>
+                        <p><i class="fas fa-phone"></i> {{ default_address.phone }}</p>
+                    </div>
+                {% else %}
+                    <div class="default-address">
+                        <h4><i class="fas fa-exclamation-triangle"></i> No Default Address</h4>
+                        <p>Please add a delivery address to place orders.</p>
+                        <a href="{{ url_for('customer.add_address') }}" style="color: #667eea;">Add Address</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="{{ url_for('customer.order_fuel') }}" class="action-btn">
+                <i class="fas fa-plus-circle"></i>
+                Order Fuel Now
+            </a>
+            
+           <a href="{{ url_for('customer.orders_history') }}" class="action-btn">
+                <i class="fas fa-history"></i>
+                View Order History
+            </a>
+
+            
+            <a href="{{ url_for('customer.addresses') }}" class="action-btn">
+                <i class="fas fa-map-marker-alt"></i>
+                Manage Addresses
+            </a>
+            
+            <a href="{{ url_for('customer.profile') }}" class="action-btn">
+                <i class="fas fa-user-edit"></i>
+                Update Profile
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-hide flash messages after 5 seconds
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(message => {
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateY(-10px)';
+                    setTimeout(() => message.remove(), 300);
+                }, 5000);
+            });
+
+            // Add click animation to stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-5px)';
+                    }, 150);
+                });
+            });
+
+            // Add smooth scrolling to view all links
+            const viewAllLinks = document.querySelectorAll('.view-all-btn');
+            viewAllLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Add loading animation
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

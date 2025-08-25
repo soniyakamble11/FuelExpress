@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Account - FuelExpress{% endblock %}
+
+{% block content %}
+<style>
+/* --- Input Field --- */
+.otp-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+.otp-input:focus {
+    border-color: #764ba2;
+    box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
+    background: #f8f5ff;
+}
+
+/* --- Button --- */
+.btn-verify {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-verify:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* --- Form Container --- */
+.verify-container {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* --- Flash Messages --- */
+.flash-message {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+.flash-message:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+.flash-success { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+.flash-danger  { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+.flash-info    { background: #bfdbfe; color: #1e40af; border: 1px solid #3b82f6; }
+</style>
+
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 verify-container">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Verify Your Account
+        </h2>
+        <p class="text-center text-gray-600 mb-4">
+            Enter the OTP sent to your email: <strong>{{ email }}</strong>
+        </p>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {% if category == 'error' %}flash-danger{% else %}flash-{{ category }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" class="space-y-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="text" name="otp" placeholder="Enter 6-digit OTP" required maxlength="6"
+                class="otp-input">
+            <button type="submit" class="btn-verify">
+                Verify
+            </button>
+        </form>
+        <div class="text-center mt-2">
+            <a href="{{ url_for('auth.login') }}" class="text-indigo-600 hover:text-indigo-500 font-medium">Back to login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
